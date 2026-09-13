@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, ArrowRight, CalendarDays, Check, MessageCircle, X } from "lucide-react";
 import { useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, type UseFormRegisterReturn } from "react-hook-form";
 
 import { trackFunnelEvent } from "@/lib/analytics";
 import { generateWhatsAppLink } from "@/lib/generateWhatsAppLink";
@@ -126,7 +126,7 @@ export function LeadQualificationForm({ property, open, onClose }: LeadQualifica
   );
 }
 
-function ChoiceStep({ title, options, input, error }: { title: string; options: string[]; input: ReturnType<typeof useForm<LeadFormValues>>["register"] extends (...args: never[]) => infer T ? T : never; error?: string }) {
+function ChoiceStep({ title, options, input, error }: { title: string; options: string[]; input: UseFormRegisterReturn; error?: string }) {
   return <div><h3 className="form-question">{title}</h3><div className="space-y-3">{options.map((option) => <label key={option} className="choice-card"><input type="radio" value={option} {...input} /><span>{option}</span><span className="choice-check"><Check size={14} /></span></label>)}</div>{error && <p className="field-error">{error}</p>}</div>;
 }
 

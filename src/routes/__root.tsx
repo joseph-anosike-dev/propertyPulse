@@ -8,6 +8,8 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
+import { useState } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -22,12 +24,7 @@ function NotFoundComponent() {
           The page you're looking for doesn't exist or has been moved.
         </p>
         <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Go home
-          </Link>
+          <Link to="/" className="primary-button">Go home <ArrowUpRight size={16} /></Link>
         </div>
       </div>
     </div>
@@ -56,16 +53,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="primary-button"
           >
             Try again
           </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
+          <Link to="/" className="secondary-button">
             Go home
-          </a>
+          </Link>
         </div>
       </div>
     </div>
@@ -77,11 +71,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Olori Properties | Distinctive Nigerian homes" },
+      { name: "description", content: "Find distinctive homes and investment property across Nigeria, with a viewing plan tailored to you." },
+      { name: "author", content: "Olori Properties" },
+      { property: "og:title", content: "Olori Properties | Distinctive Nigerian homes" },
+      { property: "og:description", content: "Find distinctive homes and investment property across Nigeria, with a viewing plan tailored to you." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
@@ -116,11 +110,35 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <div className="app-frame">
+        <header className="site-header">
+          <div className="shell flex items-center justify-between">
+            <Link to="/" className="brand-mark" onClick={() => setMenuOpen(false)}>
+              <span className="brand-mark-symbol">O</span>
+              <span><strong>olori</strong><small>properties</small></span>
+            </Link>
+            <button type="button" className="icon-button md:hidden" aria-label={menuOpen ? "Close navigation" : "Open navigation"} title={menuOpen ? "Close navigation" : "Open navigation"} onClick={() => setMenuOpen((open) => !open)}>{menuOpen ? <X size={20} /> : <Menu size={20} />}</button>
+            <nav className={`${menuOpen ? "flex" : "hidden"} absolute left-0 right-0 top-full flex-col gap-5 border-b border-line bg-paper px-6 py-6 md:static md:flex md:flex-row md:items-center md:border-0 md:bg-transparent md:p-0`}>
+              <Link to="/" className="nav-link" activeProps={{ className: "nav-link nav-link-active" }} onClick={() => setMenuOpen(false)}>Collection</Link>
+              <a href="#approach" className="nav-link" onClick={() => setMenuOpen(false)}>Our approach</a>
+              <a href="#contact" className="nav-link" onClick={() => setMenuOpen(false)}>Talk to an adviser</a>
+              <Link to="/" className="header-cta" onClick={() => setMenuOpen(false)}>Find a home <ArrowUpRight size={15} /></Link>
+            </nav>
+          </div>
+        </header>
+        <main><Outlet /></main>
+        <footer id="contact" className="site-footer">
+          <div className="shell grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
+            <div><div className="brand-mark brand-mark-footer"><span className="brand-mark-symbol">O</span><span><strong>olori</strong><small>properties</small></span></div><p className="mt-5 max-w-sm text-sm leading-6 text-slate">A considered way to find your next address across Nigeria.</p></div>
+            <div className="text-sm text-slate md:text-right"><p>Private viewings · Lagos & beyond</p><p className="mt-2">hello@olori.properties</p></div>
+          </div>
+          <div className="shell mt-10 border-t border-line pt-5 text-xs text-slate">© {new Date().getFullYear()} Olori Properties. All rights reserved.</div>
+        </footer>
+      </div>
     </QueryClientProvider>
   );
 }
