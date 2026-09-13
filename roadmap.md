@@ -1,0 +1,5 @@
+- [ ] Create Cloud schema and demo property records
+- [ ] Build property catalogue and property detail flow
+- [ ] Add validated qualification form, lead ingestion, and WhatsApp routing
+- [ ] Add responsive design system, metadata, and analytics-ready events
+- [ ] Verify the preview and resolve build/runtime issues

@@ -14,7 +14,185 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      leads: {
+        Row: {
+          budget_range: string
+          created_at: string
+          email: string | null
+          full_name: string
+          id: string
+          payment_structure: string
+          phone: string
+          pipeline_status: Database["public"]["Enums"]["lead_pipeline_status"]
+          property_id: string
+          purpose: string
+          referral_data: Json
+          source: string | null
+          timeline: string
+          whatsapp_status: string
+        }
+        Insert: {
+          budget_range: string
+          created_at?: string
+          email?: string | null
+          full_name: string
+          id?: string
+          payment_structure: string
+          phone: string
+          pipeline_status?: Database["public"]["Enums"]["lead_pipeline_status"]
+          property_id: string
+          purpose: string
+          referral_data?: Json
+          source?: string | null
+          timeline: string
+          whatsapp_status?: string
+        }
+        Update: {
+          budget_range?: string
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+          payment_structure?: string
+          phone?: string
+          pipeline_status?: Database["public"]["Enums"]["lead_pipeline_status"]
+          property_id?: string
+          purpose?: string
+          referral_data?: Json
+          source?: string | null
+          timeline?: string
+          whatsapp_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leads_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      properties: {
+        Row: {
+          agent_name: string
+          agent_whatsapp: string
+          area_sqm: number
+          bathrooms: number
+          bedrooms: number
+          city: string
+          created_at: string
+          description: string
+          highlights: string[]
+          id: string
+          is_published: boolean
+          media: Json
+          neighborhood: string
+          parking: number
+          price_ngn: number
+          slug: string
+          state: string
+          status: Database["public"]["Enums"]["property_status"]
+          title: string
+          title_document: string
+          updated_at: string
+        }
+        Insert: {
+          agent_name?: string
+          agent_whatsapp: string
+          area_sqm: number
+          bathrooms: number
+          bedrooms: number
+          city: string
+          created_at?: string
+          description: string
+          highlights?: string[]
+          id?: string
+          is_published?: boolean
+          media?: Json
+          neighborhood: string
+          parking?: number
+          price_ngn: number
+          slug: string
+          state: string
+          status?: Database["public"]["Enums"]["property_status"]
+          title: string
+          title_document: string
+          updated_at?: string
+        }
+        Update: {
+          agent_name?: string
+          agent_whatsapp?: string
+          area_sqm?: number
+          bathrooms?: number
+          bedrooms?: number
+          city?: string
+          created_at?: string
+          description?: string
+          highlights?: string[]
+          id?: string
+          is_published?: boolean
+          media?: Json
+          neighborhood?: string
+          parking?: number
+          price_ngn?: number
+          slug?: string
+          state?: string
+          status?: Database["public"]["Enums"]["property_status"]
+          title?: string
+          title_document?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      viewings: {
+        Row: {
+          created_at: string
+          id: string
+          lead_id: string
+          mode: string
+          preferred_date: string
+          preferred_time: string
+          property_id: string
+          status: Database["public"]["Enums"]["lead_pipeline_status"]
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          lead_id: string
+          mode?: string
+          preferred_date: string
+          preferred_time: string
+          property_id: string
+          status?: Database["public"]["Enums"]["lead_pipeline_status"]
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          lead_id?: string
+          mode?: string
+          preferred_date?: string
+          preferred_time?: string
+          property_id?: string
+          status?: Database["public"]["Enums"]["lead_pipeline_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "viewings_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "viewings_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +201,14 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      lead_pipeline_status:
+        | "new"
+        | "qualified"
+        | "viewing_scheduled"
+        | "completed"
+        | "offer_made"
+        | "closed"
+      property_status: "available" | "under_offer" | "sold"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +335,16 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      lead_pipeline_status: [
+        "new",
+        "qualified",
+        "viewing_scheduled",
+        "completed",
+        "offer_made",
+        "closed",
+      ],
+      property_status: ["available", "under_offer", "sold"],
+    },
   },
 } as const
