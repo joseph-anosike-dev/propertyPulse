@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1789321040066,
+      "tag": "0000_create_real_estate_lead_engine",
+      "breakpoints": true
+    }
+  ]
+}
