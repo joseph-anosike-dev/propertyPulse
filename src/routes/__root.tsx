@@ -78,7 +78,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "Find distinctive homes and investment property across Nigeria, with a viewing plan tailored to you." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
@@ -98,6 +97,9 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" />
         <HeadContent />
       </head>
       <body>
@@ -124,8 +126,8 @@ function RootComponent() {
             <button type="button" className="icon-button md:hidden" aria-label={menuOpen ? "Close navigation" : "Open navigation"} title={menuOpen ? "Close navigation" : "Open navigation"} onClick={() => setMenuOpen((open) => !open)}>{menuOpen ? <X size={20} /> : <Menu size={20} />}</button>
             <nav className={`${menuOpen ? "flex" : "hidden"} absolute left-0 right-0 top-full flex-col gap-5 border-b border-line bg-paper px-6 py-6 md:static md:flex md:flex-row md:items-center md:border-0 md:bg-transparent md:p-0`}>
               <Link to="/" className="nav-link" activeProps={{ className: "nav-link nav-link-active" }} onClick={() => setMenuOpen(false)}>Collection</Link>
-              <a href="#approach" className="nav-link" onClick={() => setMenuOpen(false)}>Our approach</a>
-              <a href="#contact" className="nav-link" onClick={() => setMenuOpen(false)}>Talk to an adviser</a>
+              <a href="/#approach" className="nav-link" onClick={() => setMenuOpen(false)}>Our approach</a>
+              <a href="/#contact" className="nav-link" onClick={() => setMenuOpen(false)}>Talk to an adviser</a>
               <Link to="/" className="header-cta" onClick={() => setMenuOpen(false)}>Find a home <ArrowUpRight size={15} /></Link>
             </nav>
           </div>
