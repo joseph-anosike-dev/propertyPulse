@@ -12,7 +12,10 @@ export const Route = createFileRoute("/")({
     { name: "description", content: "Browse distinctive homes in Lagos and across Nigeria, then plan your next move with a property adviser." },
     { property: "og:title", content: "Olori Properties | Distinctive Nigerian homes" },
     { property: "og:description", content: "Browse distinctive homes in Lagos and across Nigeria, then plan your next move with a property adviser." },
-  ] }),
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+    { property: "og:url", content: "/" },
+  ], links: [{ rel: "canonical", href: "/" }] }),
   component: Index,
 });
 
@@ -33,7 +36,7 @@ function Index() {
       <div className="hero-copy">
         <p className="eyebrow">Property, with perspective</p>
         <h1>Find a place that feels <em>like yours.</em></h1>
-        <p className="hero-intro">Distinctive homes, carefully considered locations, and an adviser who listens before they recommends.</p>
+         <p className="hero-intro">Distinctive homes, carefully considered locations, and an adviser who listens before they recommend.</p>
         <div className="search-panel">
           <div className="search-field"><Search size={17} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search a home or neighbourhood" aria-label="Search homes" /></div>
           <select value={location} onChange={(event) => setLocation(event.target.value)} aria-label="Filter by location"><option>All locations</option><option>Lekki</option><option>Lagos Island</option></select>
