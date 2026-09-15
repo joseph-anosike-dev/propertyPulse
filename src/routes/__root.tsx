@@ -84,7 +84,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
     ],
   }),
   shellComponent: RootShell,
@@ -113,6 +113,16 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const [menuOpen, setMenuOpen] = useState(false);
+  useEffect(() => {
+    const handleFunnelEvent = (event: Event) => {
+      const detail = (event as CustomEvent<{ name: string; properties: Record<string, string | number> }>).detail;
+      const windowWithAnalytics = window as typeof window & { dataLayer?: unknown[]; fbq?: (...args: unknown[]) => void };
+      windowWithAnalytics.dataLayer?.push({ event: detail.name, ...detail.properties });
+      windowWithAnalytics.fbq?.("trackCustom", detail.name, detail.properties);
+    };
+    window.addEventListener("real-estate-funnel", handleFunnelEvent);
+    return () => window.removeEventListener("real-estate-funnel", handleFunnelEvent);
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
