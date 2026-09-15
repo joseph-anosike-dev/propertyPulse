@@ -1,11 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, ArrowRight, CalendarDays, Check, MessageCircle, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useForm, type UseFormRegisterReturn } from "react-hook-form";
 
 import { trackFunnelEvent } from "@/lib/analytics";
 import { generateWhatsAppLink } from "@/lib/generateWhatsAppLink";
 import { leadFormSchema, submitLead, type LeadFormValues } from "@/lib/lead.functions";
+import { getReferralData } from "@/lib/analytics";
 import { useServerFn } from "@tanstack/react-start";
 
 interface LeadQualificationFormProps {
@@ -25,7 +26,9 @@ export function LeadQualificationForm({ property, open, onClose }: LeadQualifica
   const [step, setStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [completed, setCompleted] = useState(false);
+  const [referralData, setReferralData] = useState<Record<string, string>>({});
   const submitLeadFn = useServerFn(submitLead);
+  useEffect(() => setReferralData(getReferralData()), []);
   const {
     register,
     handleSubmit,
@@ -62,7 +65,7 @@ export function LeadQualificationForm({ property, open, onClose }: LeadQualifica
   const onSubmit = async (values: LeadFormValues) => {
     setIsSubmitting(true);
     try {
-      await submitLeadFn({ data: { ...values, propertyId: property.id, referralData: values.referralData ?? {} } });
+      await submitLeadFn({ data: { ...values, propertyId: property.id, source: values.source || referralData.utm_source, referralData: { ...referralData, ...(values.referralData ?? {}) } } });
       trackFunnelEvent("qualification_form_completed", { property_id: property.id, property_title: property.title });
       setCompleted(true);
       const link = generateWhatsAppLink({
@@ -126,10 +129,10 @@ export function LeadQualificationForm({ property, open, onClose }: LeadQualifica
   );
 }
 
-function ChoiceStep({ title, options, input, error }: { title: string; options: string[]; input: UseFormRegisterReturn; error?: string }) {
+function ChoiceStep({ title, options, input, error }: { title: string; options: string[]; input: UseFormRegisterReturn; error?: string | undefined }) {
   return <div><h3 className="form-question">{title}</h3><div className="space-y-3">{options.map((option) => <label key={option} className="choice-card"><input type="radio" value={option} {...input} /><span>{option}</span><span className="choice-check"><Check size={14} /></span></label>)}</div>{error && <p className="field-error">{error}</p>}</div>;
 }
 
-function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
+function Field({ label, error, children }: { label: string; error?: string | undefined; children: ReactNode }) {
   return <label className="block"><span className="field-label">{label}</span>{children}{error && <span className="field-error">{error}</span>}</label>;
 }
