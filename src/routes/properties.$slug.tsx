@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, ArrowUpRight, BedDouble, CalendarDays, Check, FileCheck2, MapPin, Maximize2, MessageCircle, ParkingSquare } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, BedDouble, CalendarDays, Check, FileCheck2, MapPin, Maximize2, MessageCircle, ParkingSquare, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { LeadQualificationForm } from "@/components/LeadQualificationForm";
