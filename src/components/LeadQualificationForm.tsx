@@ -65,7 +65,7 @@ export function LeadQualificationForm({ property, open, onClose }: LeadQualifica
   const onSubmit = async (values: LeadFormValues) => {
     setIsSubmitting(true);
     try {
-      await submitLeadFn({ data: { ...values, propertyId: property.id, source: values.source || referralData.utm_source, referralData: { ...referralData, ...(values.referralData ?? {}) } } });
+       await submitLeadFn({ data: { ...values, propertyId: property.id, source: values.source || referralData["utm_source"], referralData: { ...referralData, ...values.referralData } } });
       trackFunnelEvent("qualification_form_completed", { property_id: property.id, property_title: property.title });
       setCompleted(true);
       const link = generateWhatsAppLink({

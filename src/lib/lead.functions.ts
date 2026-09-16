@@ -17,7 +17,7 @@ export const leadFormSchema = z.object({
   viewingTime: z.enum(["Morning · 9am–12pm", "Afternoon · 12pm–3pm", "Evening · 3pm–6pm", ""]).or(z.literal("")),
   viewingMode: z.enum(["Physical inspection", "Virtual tour"]),
   source: z.string().max(120).optional(),
-  referralData: z.record(z.string()).default({}),
+  referralData: z.record(z.string()),
 });
 
 export type LeadFormValues = z.infer<typeof leadFormSchema>;

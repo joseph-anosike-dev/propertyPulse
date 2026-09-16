@@ -60,6 +60,7 @@ function Index() {
 
 function PropertyCard({ property, featured }: { property: (typeof Route.useLoaderData extends () => infer T ? T : never)[number]; featured: boolean }) {
   const image = getPropertyImages(property.media, `${property.title} exterior`)[0];
+  if (!image) return null;
   return <Link to="/properties/$slug" params={{ slug: property.slug }} className={`property-card ${featured ? "property-card-featured" : ""}`}>
     <div className="property-image"><img src={image.src} width={1600} height={1008} loading="lazy" alt={image.alt} /><span className="status-tag">{property.status === "under_offer" ? "Under offer" : property.status}</span><span className="card-arrow"><MoveUpRight size={17} /></span></div>
     <div className="property-card-body"><div className="flex items-start justify-between gap-4"><div><p className="property-location"><MapPin size={14} /> {property.neighborhood}, {property.city}</p><h3>{property.title}</h3></div><strong className="property-price">{formatNaira(property.price_ngn)}</strong></div><div className="property-specs"><span><BedDouble size={15} /> {property.bedrooms} beds</span><span>{property.bathrooms} baths</span><span>{property.area_sqm} m²</span></div></div>
